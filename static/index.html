@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Ask a Question | TDS Project 1 | May 2025</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+	<style>
+		/* Ensure the output area is scrollable if the content is long */
+		#output {
+			min-height: 100px;
+			max-height: 300px;
+			overflow-y: auto;
+			white-space: pre-wrap;
+			word-break: break-word;
+		}
+
+		/* Prevent the container from shrinking too much on small screens */
+		.ask-container {
+			max-width: 500px;
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body class="bg-light">
+
+	<div class="container py-5 d-flex flex-column justify-content-center align-items-center" style="min-height: 100vh;">
+		<div class="ask-container">
+			<form id="askForm" class="mb-4">
+				<div class="mb-3">
+					<input type="text" class="form-control" id="questionInput" placeholder="Ask your question..."
+						required>
+				</div>
+				<div class="mb-3">
+					<input type="file" class="form-control" id="imageInput" accept="image/*">
+					<div class="form-text">Image is optional.</div>
+				</div>
+				<button class="btn btn-primary w-100" type="submit">Submit</button>
+			</form>
+			<pre id="output" class="bg-white p-3 border rounded"></pre>
+			<!-- Centered Markdown Button -->
+			<div class="mb-3 d-flex justify-content-center">
+				<a href="https://github.com/govindgrover/tds-t2-2025-project1" target="_blank"
+					class="btn btn-outline-secondary btn-sm">
+					View on GitHub
+				</a>
+			</div>
+
+		</div>
+	</div>
+
+	<script>
+		const form = document.getElementById('askForm');
+		const questionInput = document.getElementById('questionInput');
+		const imageInput = document.getElementById('imageInput');
+		const output = document.getElementById('output');
+
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			output.textContent = 'Loading...';
+
+			const question = questionInput.value;
+			const file = imageInput.files[0];
+
+			// Function to send payload to API
+			const sendPayload = async (payload) => {
+				try {
+					const response = await fetch('/api/ask', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify(payload)
+					});
+					const data = await response.json();
+					output.textContent = JSON.stringify(data, null, 2);
+					// Auto-scroll to output when response is long
+					output.scrollTop = 0;
+				} catch (err) {
+					output.textContent = 'Error: ' + err;
+				}
+			};
+
+			if (file) {
+				const reader = new FileReader();
+				reader.onload = function (event) {
+					const base64String = event.target.result.split(',')[1];
+					const payload = {
+						question: question,
+						image: base64String
+					};
+					sendPayload(payload);
+				};
+				reader.readAsDataURL(file);
+			} else {
+				// No image selected, send only the question
+				const payload = {
+					question: question,
+					image: null  // Or you can omit this field if your backend allows
+				};
+				sendPayload(payload);
+			}
+		});
+	</script>
+</body>
+
+</html>
