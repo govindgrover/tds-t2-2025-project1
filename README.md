@@ -82,7 +82,13 @@ Moreover, information about how much tokens costs the text is also there in the 
 
 ## References
 
+1. ChatGPT
+2. Perplexity
+3. https://discourse.onlinedegree.iitm.ac.in/t/using-browser-cookies-to-access-discourse-api-in-python/173605
+4.  https://github.com/sanand0/aipipe?tab=readme-ov-file#api
+5. https://github.com/23f3004008/TDS-Project1-Data
 
-> Built with ❤️/🧠 by [@govindgrover](https://in.linkedin.com/in/govindgrover)
 ---
+> Built with ❤️/🧠 by [@govindgrover](https://in.linkedin.com/in/govindgrover)
+
 *[Back to top?](#table-of-contents)*
