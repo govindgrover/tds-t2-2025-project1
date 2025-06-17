@@ -38,8 +38,14 @@
 				</div>
 				<button class="btn btn-primary w-100" type="submit">Submit</button>
 			</form>
-			<pre id="output" class="bg-white p-3 border rounded"></pre>
-			<!-- Centered Markdown Button -->
+			<div class="output-wrapper position-relative mb-3" style="max-width: 500px;">
+				<button id="copyBtn" class="btn btn-outline-light btn-sm position-absolute"
+					style="top: 8px; right: 8px; z-index: 2;" type="button" title="Copy to clipboard">
+					Copy
+				</button>
+				<pre id="output" class="bg-dark text-light p-3 rounded"
+					style="min-height: 100px; max-height: 300px; overflow-y: auto; white-space: pre-wrap; word-break: break-word;"></pre>
+			</div> <!-- Centered Markdown Button -->
 			<div class="mb-3 d-flex justify-content-center">
 				<a href="https://github.com/govindgrover/tds-t2-2025-project1" target="_blank"
 					class="btn btn-outline-secondary btn-sm">
@@ -98,6 +104,23 @@
 					image: null  // Or you can omit this field if your backend allows
 				};
 				sendPayload(payload);
+			}
+		});
+
+		const copyBtn = document.getElementById('copyBtn');
+
+		copyBtn.addEventListener('click', () => {
+			const text = output.textContent;
+			if (text.trim()) {
+				navigator.clipboard.writeText(text)
+					.then(() => {
+						copyBtn.textContent = 'Copied!';
+						setTimeout(() => copyBtn.textContent = 'Copy', 1200);
+					})
+					.catch(() => {
+						copyBtn.textContent = 'Error';
+						setTimeout(() => copyBtn.textContent = 'Copy', 1200);
+					});
 			}
 		});
 	</script>
